@@ -19,8 +19,10 @@ public class Traversal {
 	/**
 	 * Traverses binary tree using BFS and DFS approach.
 	 * 
-	 * @param type - Type of traversal - IN_ORDER, PRE_ORDER, POST_ORDER, BFS_ORDER.
-	 * @param rootNode - root node of the tree.
+	 * @param type
+	 *            - Type of traversal - IN_ORDER, PRE_ORDER, POST_ORDER, BFS_ORDER.
+	 * @param rootNode
+	 *            - root node of the tree.
 	 */
 	public void traversalType(int type, Node rootNode) {
 
@@ -55,14 +57,23 @@ public class Traversal {
 		inOrderTraversal(rootNode);
 		return treeElements;
 	}
-	
+
 	private void bfsTraversal(Node node) {
+		// if (node != null) {
+		// perform(node);
+		// queue.add(node.getlNode());
+		// queue.add(node.getrNode());
+		// for (int i = 0; i < queue.size(); i++) {
+		// bfsTraversal(queue.poll());
+		// }
+		// }
 		if (node != null) {
 			perform(node);
-			queue.add(node.getlNode());
-			queue.add(node.getrNode());
+			queue.add(node);
 			for (int i = 0; i < queue.size(); i++) {
-				bfsTraversal(queue.poll());
+				Node n = queue.poll();
+				bfsTraversal(n.getlNode());
+				bfsTraversal(n.getrNode());
 			}
 		}
 	}

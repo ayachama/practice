@@ -1,8 +1,10 @@
 package com.base.binarytree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 import com.base.Node;
 
@@ -205,8 +207,10 @@ public class TreeOperation {
 	/**
 	 * Checks if two trees are identical.
 	 * 
-	 * @param node1 - root node of tree 1.
-	 * @param node2 - root node of tree 2.
+	 * @param node1
+	 *            - root node of tree 1.
+	 * @param node2
+	 *            - root node of tree 2.
 	 * @return
 	 */
 	public boolean checkIfTreesAreIdentical(Node node1, Node node2) {
@@ -217,13 +221,196 @@ public class TreeOperation {
 		if ((node1 != null && node2 == null) || (node1 == null && node2 != null))
 			return false;
 
-		if (node1.getlNode() == node2.getlNode() && checkIfTreesAreIdentical(node1.getlNode(), node2.getlNode())
+		if (node1.getNode() == node2.getNode() && checkIfTreesAreIdentical(node1.getlNode(), node2.getlNode())
 				&& checkIfTreesAreIdentical(node1.getrNode(), node2.getrNode()))
 			return true;
 
 		return false;
 	}
 
-	
-	
+	/**
+	 * Checks if tree 2 is subtree of tree 1.
+	 * 
+	 * @param node1
+	 *            - root node of tree 1.
+	 * @param node2
+	 *            - root node of tree 2.
+	 * @return - true if it is subtree.
+	 */
+	public boolean isSubTree(Node node1, Node node2) {
+
+		if (node1 == null && node2 == null)
+			return true;
+
+		if ((node1 != null && node2 == null) || (node1 == null && node2 != null))
+			return false;
+
+		if (node1.getNode() == node2.getNode()) {
+			return checkIfTreesAreIdentical(node1, node2);
+		}
+
+		return (isSubTree(node1.getlNode(), node2) || isSubTree(node1.getrNode(), node2));
+	}
+
+	/**
+	 * Returns sum of all the elements in the binary tree.
+	 * 
+	 * @param node
+	 *            - root node.
+	 * @return - sum of all the elements.
+	 */
+	public int getSumOfAllNodes(Node node) {
+
+		if (node == null)
+			return 0;
+
+		int sum = node.getNode() + getSumOfAllNodes(node.getlNode()) + getSumOfAllNodes(node.getrNode());
+		return sum;
+	}
+
+	public int nVal = 0;
+
+	/**
+	 * Checks if give tree is a sum tree. This method is not completely implemented.
+	 */
+	public int isSumTree(Node node) {
+		if (node != null) {
+			nVal = isSumTree(node.getlNode()) + isSumTree(node.getrNode());
+			if (!(nVal == node.getNode())) {
+				System.out.println("Not a Sum Tree");
+			} else {
+				System.out.println("Sum Tree");
+			}
+			return node.getNode();
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * 
+	 * @param node
+	 */
+	public void giveNumberOfLeafNode(Node node) {
+		if (node != null) {
+			giveNumberOfLeafNode(node.getlNode());
+			giveNumberOfLeafNode(node.getrNode());
+			if (node.getlNode() == null && node.getrNode() == null)
+				nVal++;
+		}
+
+	}
+
+	private Queue<Integer> path = new LinkedList<>();
+
+	/**
+	 * Print path to leaf node.
+	 * 
+	 * @param node
+	 */
+	public void printPathToLeaf(Node node) {
+		if (node != null) {
+			path.add(node.getNode());
+			printPathToLeaf(node.getlNode());
+			if (node.getlNode() == null && node.getrNode() == null) {
+				System.out.println(path.toString());
+			}
+			printPathToLeaf(node.getrNode());
+			path.remove(node.getNode());
+		}
+	}
+
+	/**
+	 * Prints all diagonal elements in a Binary Tree.
+	 * 
+	 * @param node
+	 *            - root node of binary tree.
+	 */
+	public void printDiagonalElements(Node node) {
+		addDiagValue(node, 0);
+		Queue<Node> queue = new LinkedList<>();
+		queue.add(node);
+		queue.add(null);
+		Node n = null;
+		while (!queue.isEmpty()) {
+			n = queue.poll();
+			if (n == null) {
+				System.out.println("");
+				queue.add(null);
+				n = queue.poll();
+				if (n == null)
+					break;
+			}
+			while (n != null) {
+				System.out.print(":" + n.getNode());
+				if (n.getlNode() != null)
+					queue.add(n.getlNode());
+				n = n.getrNode();
+			}
+		}
+	}
+
+	private void addDiagValue(Node node, int value) {
+		if (node != null) {
+			node.setDigVal(value);
+			addDiagValue(node.getlNode(), value + 1);
+			addDiagValue(node.getrNode(), value);
+		}
+	}
+
+	/**
+	 * Print all nodes visible from top view.
+	 * 
+	 * @param node
+	 *            - node.
+	 * @param position
+	 *            - position from which we pass.
+	 */
+	public void topView(Node node, int position) {
+		if (node != null) {
+			if (position == 0) {
+				System.out.print(node.getNode() + ":");
+				topView(node.getlNode(), 1);
+				topView(node.getrNode(), 2);
+			}
+			if (position == 1) {
+				if (node.getlNode() == null && node.getrNode() == null) {
+					System.out.print(node.getNode() + ":");
+					return;
+				}
+				System.out.print(node.getNode() + ":");
+				topView(node.getlNode(), 1);
+			}
+
+			if (position == 2) {
+				if (node.getlNode() == null && node.getrNode() == null) {
+					System.out.print(node.getNode() + ":");
+					return;
+				}
+				System.out.print(node.getNode() + ":");
+				topView(node.getrNode(), 2);
+			}
+		}
+	}
+
+	/**
+	 * Prints first common ancestor for two nodes in binary tree.
+	 * 
+	 * @param node
+	 */
+	public boolean printFirstAncestor(Node node, int a, int b) {
+		boolean aFound = false;
+		boolean bFound = false;
+		if (node != null) {
+			if (node.getNode() == a || node.getNode() == b)
+				return true;
+			aFound = printFirstAncestor(node.getlNode(), a, b);
+			bFound = printFirstAncestor(node.getrNode(), a, b);
+			if (aFound && bFound) {
+				System.out.println(node.getNode());
+			}
+		}
+		return aFound || bFound;
+	}
+
 }
