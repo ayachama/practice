@@ -59,14 +59,6 @@ public class Traversal {
 	}
 
 	private void bfsTraversal(Node node) {
-		// if (node != null) {
-		// perform(node);
-		// queue.add(node.getlNode());
-		// queue.add(node.getrNode());
-		// for (int i = 0; i < queue.size(); i++) {
-		// bfsTraversal(queue.poll());
-		// }
-		// }
 		if (node != null) {
 			perform(node);
 			queue.add(node);

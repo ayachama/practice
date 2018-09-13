@@ -81,6 +81,7 @@ public class TreeOperation {
 	}
 
 	// private method for checking if BST using in order traversal method.
+	// Inorder traversal should show numbers in ascending order.
 	private boolean checkBinarySearchTree(Node rootNode) {
 		ArrayList<Integer> arrayList = new Traversal().inOrTraversal(rootNode);
 		for (int i = 0; i < arrayList.size() - 1; i++) {
@@ -119,7 +120,7 @@ public class TreeOperation {
 	}
 
 	private void searchNextNode(Node node, int searchFor, boolean isNextNull) {
-		// Checks let sub tree.
+		// Checks left sub tree.
 		if (node != null && isNextNull == false) {
 			searchNextNode(node.getlNode(), searchFor, false);
 			if (searchFor == node.getNode()) {
